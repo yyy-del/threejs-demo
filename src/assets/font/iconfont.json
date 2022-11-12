@@ -1,0 +1,16 @@
+{
+  "id": "3765312",
+  "name": "THREEdEMO",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "128044",
+      "name": "3d",
+      "font_class": "3d",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    }
+  ]
+}
