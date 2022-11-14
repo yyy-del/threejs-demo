@@ -1,12 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
+let router = useRouter()
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+const currentPath  = computed(()=>  router.currentRoute.value.path)
+
 
 </script>
 <template>
@@ -17,20 +16,19 @@ const handleClose = (key: string, keyPath: string[]) => {
                 <img src="~@/assets/vue.svg"/>
              </div>
              <el-menu
-               default-active="/three/pcdLoad"
+               :default-active="currentPath"
                class="el-menu-vertical-demo"
                router
-               @open="handleOpen"
-               @close="handleClose"
              >
-               <el-sub-menu index="1">
+               <el-sub-menu index="/three">
                  <template #title>
                    <i class="iconfont icon-3d menu-icon"></i>
                    <span>THREE</span>
                  </template>
                  <el-menu-item-group>
                    <el-menu-item index="/three/pcdLoad" >pcdLoad</el-menu-item>
-                   <el-menu-item index="1-2">item two</el-menu-item>
+                   <el-menu-item index="/three/firstThree">firstThree</el-menu-item>
+                   <el-menu-item index="/three/vertexAndStructure">顶点和结构</el-menu-item>
                  </el-menu-item-group>
                </el-sub-menu>
              </el-menu>

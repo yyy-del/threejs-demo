@@ -8,7 +8,7 @@
    </div>
 </template>
 <script setup lang="ts">
-import {ref, onMounted, render, onBeforeUnmount } from 'vue';
+import {ref, onMounted,  onBeforeUnmount } from 'vue';
 
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -19,7 +19,7 @@ import { PCDLoader } from 'three/examples/jsm/loaders/PCDLoader.js'
 let pcdPosInfo = ref('') //相机和中心点信息
 let pcdPosInfoVisible = ref(false)  //是否显示相机和中心点信息
 let animateID:number //动画的id标识
-let isSetCenter = false  //是否开始设置中心点
+
 
 let mouse = new THREE.Vector2() // 设置中心点鼠标
 let raycaster = new THREE.Raycaster() //这个类用于进行raycasting（光线投射）。 光线投射用于进行鼠标拾取（在三维空间中计算出鼠标移过了什么物体）。
@@ -44,7 +44,6 @@ const pcdDefaultInfo = {   //模型的默认设置
         position: [-0.02, -0.47, -0.88], // 默认相机位置
         target: [0, 0, 0] // 控制器聚焦
       }
-
 
 
 
@@ -113,7 +112,6 @@ function init() {
 } 
 
 function render() {
-   console.log('rerender')
    let Html = ''
    renderer.render(scene, camera)
       const child = scene.children
@@ -141,7 +139,7 @@ function loadPCD(){
        points.name = 'mypcd'  //给pcd命名
 
        scene.add(points)
-       console.log(points)
+
        toggleView('frontView')  //设置视图方向
     },
     function (xhr) { //模型加载进度
@@ -165,7 +163,7 @@ function loadPCD(){
 function  animate () {
   animateID = requestAnimationFrame(animate)
   controls.update() // only required if controls.enableDamping = true, or if controls.autoRotate = true
-  render()
+
 }
 
 /**
@@ -228,8 +226,6 @@ function handlerClick(e:MouseEvent){
           points.position.set(centerPosition[0], centerPosition[1],centerPosition[2])
           
           render()
-
-        
 
           console.log(selected.point)
         }

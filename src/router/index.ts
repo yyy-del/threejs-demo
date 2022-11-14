@@ -4,7 +4,7 @@
  const routes:RouteRecordRaw[] = [
   {
    path:'/',
-   redirect:'/home'
+   redirect:'/three'
   },
   {
     path:'/home',
@@ -20,6 +20,16 @@
         name:'pcdLoad',
         component:()=>import('@/views/three/pcd/pcdLoad.vue')
       } ,
+      {
+        path:'/three/firstThree',
+        name:'firstThree',
+        component:() => import('@/views/three/firstThree/FirstThree.vue')
+      },
+      {
+        path:'/three/vertexAndStructure',
+        name:'vertexAndStructure',
+        component:() => import('@/views/three/vertexAndStructure/VertexAndStructure.vue')
+      },
        //匹配所有404
       { 
         path: '/:pathMatch(.*)*', 
