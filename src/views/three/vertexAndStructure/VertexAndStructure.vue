@@ -22,6 +22,7 @@
   })
   onUnmounted(()=>{
     controls.removeEventListener('change',render)
+    destroyModel()
   })
 
 
@@ -208,6 +209,32 @@
   function render(){
     renderer.render(scene,camera)
   }
+
+
+  
+  /**
+ * 销毁模型
+*/
+function destroyModel () {
+  console.log('销毁模型')
+  const elem = document.getElementById('vertex-structure')
+  try {
+    if(elem){
+      // 离开页面停止动画
+
+      scene.clear()
+      renderer.dispose()
+      renderer.forceContextLoss()
+      const gl = renderer.domElement.getContext('webgl')
+      gl&& gl.getExtension('WEBGL_lose_context')?.loseContext()
+      elem.innerHTML = ''
+      console.log('销毁成功')
+    }
+  } catch (e) {
+    console.log(e)
+    console.log('销毁失败')
+  }
+}
 
 
 </script>

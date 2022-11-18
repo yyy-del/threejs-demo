@@ -29,6 +29,8 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
                    <el-menu-item index="/three/pcdLoad" >pcdLoad</el-menu-item>
                    <el-menu-item index="/three/firstThree">firstThree</el-menu-item>
                    <el-menu-item index="/three/vertexAndStructure">顶点和结构</el-menu-item>
+                   <el-menu-item index="/three/hierarchyAndTree">Group和数结构</el-menu-item>
+                   <el-menu-item index="/three/textureMap">纹理贴图</el-menu-item>
                  </el-menu-item-group>
                </el-sub-menu>
              </el-menu>

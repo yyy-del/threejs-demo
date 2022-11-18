@@ -4,7 +4,7 @@
  const routes:RouteRecordRaw[] = [
   {
    path:'/',
-   redirect:'/three'
+   redirect:'/home'
   },
   {
     path:'/home',
@@ -29,6 +29,16 @@
         path:'/three/vertexAndStructure',
         name:'vertexAndStructure',
         component:() => import('@/views/three/vertexAndStructure/VertexAndStructure.vue')
+      },
+      {
+        path:'/three/hierarchyAndTree',
+        name:'hierarchyAndTree',
+        component:() => import('@/views/three/hierarchyAndTree/HierarchyAndTree.vue')
+      },
+      {
+        path:'/three/textureMap',
+        name:'textureMap',
+        component:() => import('@/views/three/textureMap/TextureMap.vue')
       },
        //匹配所有404
       { 
