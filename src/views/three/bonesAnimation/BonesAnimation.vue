@@ -182,8 +182,11 @@ function init(){
 
 // 创建操作面板
 function createPanel() {
-
   const panel = new GUI( { width: 310 } );
+  panel.domElement.style.position = 'absolute'
+  document.querySelector('#bones')?.appendChild(panel.domElement)
+ 
+  console.log(panel)
    
   // 创建折叠面板
   const folder1 = panel.addFolder( 'Visibility' );
