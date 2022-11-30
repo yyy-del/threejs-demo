@@ -12,11 +12,13 @@ import { onMounted, onUnmounted,ref } from 'vue';
 import * as THREE from 'three'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import  { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-import  { GLTF } from '@types/three/examples/jsm/loaders/GLTFLoader'
+
+import { GUI } from 'lil-gui';
 
 import Stats from 'three/examples/jsm/libs/stats.module.js';
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 
