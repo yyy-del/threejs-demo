@@ -31,7 +31,7 @@ env:
 permissions:
   contents: read
   pages: write
-  # id-token: write
+  id-token: write
 
 # Allow one concurrent deployment
 concurrency:
@@ -69,6 +69,9 @@ jobs:
     environment:
       name: 'github-pages'
       url: ${{  steps.deployment.outputs.page_url }}
+      # This token is provided by Actions, you do not need to create your own token
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+  
 
     steps:
     - name: Checkout
