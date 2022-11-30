@@ -40,6 +40,26 @@
         name:'textureMap',
         component:() => import('@/views/three/textureMap/TextureMap.vue')
       },
+      {
+        path:'/three/camera',
+        name:'camera',
+        component:() => import('@/views/three/camera/Camera.vue')
+      },
+      {
+        path:'/three/sprite',
+        name:'sprite',
+        component:() => import('@/views/three/sprite/Sprite.vue')
+      },
+      {
+        path:'/three/animation',
+        name:'animation',
+        component:() => import('@/views/three/animation/Animation.vue')
+      },
+      {
+        path:'/three/bonesAnimation',
+        name:'bonesAnimation',
+        component:() => import('@/views/three/bonesAnimation/BonesAnimation.vue')
+      },
        //匹配所有404
       { 
         path: '/:pathMatch(.*)*', 

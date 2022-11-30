@@ -261,6 +261,7 @@ import * as THREE from 'three'
   // if units are meters then 0.01 here makes size
   // of the label into centimeters.
   const labelBaseScale = 1
+  // 创建精灵模型
   const label = new THREE.Sprite(labelMaterial)
 
   personGroup.add(label)

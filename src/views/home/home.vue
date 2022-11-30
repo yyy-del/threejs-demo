@@ -31,6 +31,10 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
                    <el-menu-item index="/three/vertexAndStructure">顶点和结构</el-menu-item>
                    <el-menu-item index="/three/hierarchyAndTree">Group和数结构</el-menu-item>
                    <el-menu-item index="/three/textureMap">纹理贴图</el-menu-item>
+                   <el-menu-item index="/three/camera">相机</el-menu-item>
+                   <el-menu-item index="/three/sprite">精灵模型</el-menu-item>
+                   <el-menu-item index="/three/animation">动画模块</el-menu-item>
+                   <el-menu-item index="/three/bonesAnimation">骨骼动画</el-menu-item>
                  </el-menu-item-group>
                </el-sub-menu>
              </el-menu>
@@ -61,6 +65,7 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
     }
   }
   .el-main{
+    position: relative;
     --el-main-padding: 2px;
     background-color:$--home-background-color;
   }

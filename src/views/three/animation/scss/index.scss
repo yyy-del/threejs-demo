@@ -1,0 +1,16 @@
+
+#animation{
+  width: 100%;
+  height: calc(100% - 32px);
+}
+.tools{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 32px;
+  .bottom{
+    top: 0;
+    left: 0;
+  }
+
+}
