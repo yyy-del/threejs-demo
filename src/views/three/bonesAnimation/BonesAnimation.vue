@@ -10,8 +10,12 @@
 import { onMounted, onUnmounted,ref } from 'vue';
 
 import * as THREE from 'three'
+
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import  { GLTF } from '@types/three/examples/jsm/loaders/GLTFLoader'
+
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -24,15 +28,17 @@ let scene:THREE.Scene
 let renderer:THREE.WebGLRenderer
 let orbControls:OrbitControls
 let animateID:number
-let meshGroup = new THREE.Group()
+
 let mixer:THREE.AnimationMixer
-let clip:THREE.AnimationClip
-let animationPlay:THREE.AnimationAction
+
 
 let skeleton:THREE.SkeletonHelper
-let model:any
+let model:THREE.Group
 let settings:any
+
+// 性能监控器
 let stats:Stats
+
 // 动作
 let idleAction:THREE.AnimationAction
 let walkAction:THREE.AnimationAction
@@ -75,7 +81,7 @@ function init(){
   // 创建场景
   scene = new THREE.Scene()
   scene.background = new THREE.Color( 0xa0a0a0 );
-	scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 );
+	scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 ); // 设置雾
 
 
 
@@ -83,10 +89,12 @@ function init(){
   const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
 	hemiLight.position.set( 0, 20, 0 );
 	scene.add(hemiLight);
+
   // 创建方向光
   const dirLight = new THREE.DirectionalLight( 0xffffff );
   dirLight.position.set( - 3, 10, - 10 );
-  dirLight.castShadow = true;
+   // 开启阴影
+  dirLight.castShadow = true; 
   dirLight.shadow.camera.top = 2;
   dirLight.shadow.camera.bottom = - 2;
   dirLight.shadow.camera.left = - 2;
@@ -95,34 +103,43 @@ function init(){
   dirLight.shadow.camera.far = 40;
   scene.add( dirLight );
    
-  // ground
+  // 创建地板 ground
 
   const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
 	mesh.rotation.x = - Math.PI / 2;
-	mesh.receiveShadow = true;
+	mesh.receiveShadow = true; // 接受阴影
 	scene.add( mesh );
 
+
+   // 加载gltf文件
   const loader = new GLTFLoader();
 	loader.load( location.origin + '/model/gltf/Soldier.glb',
-    function ( gltf:any ) {
+    function ( gltf:GLTF ) {
+      console.log(gltf)
 	 	  model = gltf.scene;
 	 	  scene.add( model );
+      
+      // 遍历文件的模型并添加阴影
 	 	  model.traverse( function ( object:any ) {
 	 	  	if ( object.isMesh ) object.castShadow = true;
 	 	  } );
-	 	  //
+
+	 	  // 添加骨骼辅助系统
 	 	  skeleton = new THREE.SkeletonHelper( model );
 	 	  skeleton.visible = false;
 	 	  scene.add( skeleton );
-	 	  //
+
+	 	  // 创建操作面板
 	 	  createPanel();
-	 	  //
+
+	 	  //添加动画
 	 	  const animations = gltf.animations;
 	 	  mixer = new THREE.AnimationMixer( model );
 	 	  idleAction = mixer.clipAction( animations[ 0 ] );
 	 	  walkAction = mixer.clipAction( animations[ 3 ] );
 	 	  runAction = mixer.clipAction( animations[ 1 ] );
 	 	  actions = [ idleAction, walkAction, runAction ];
+
 	 	  activateAllActions();
 	 	  render();
 	  },// called while loading is progressing
@@ -160,10 +177,13 @@ function init(){
 }
 
 
+
+// 创建操作面板
 function createPanel() {
 
   const panel = new GUI( { width: 310 } );
-  
+   
+  // 创建折叠面板
   const folder1 = panel.addFolder( 'Visibility' );
   const folder2 = panel.addFolder( 'Activation/Deactivation' );
   const folder3 = panel.addFolder( 'Pausing/Stepping' );
@@ -171,33 +191,39 @@ function createPanel() {
   const folder5 = panel.addFolder( 'Blend Weights' );
   const folder6 = panel.addFolder( 'General Speed' );
   
+  // 设置控制面板可配置项
   settings = {
-    'show model': true,
-    'show skeleton': false,
-    'deactivate all': deactivateAllActions,
-    'activate all': activateAllActions,
-    'pause/continue': pauseContinue,
-    'make single step': toSingleStepMode,
-    'modify step size': 0.05,
-    'from walk to idle': function () {
+
+    'show model': true,  // 是否展现模型
+    'show skeleton': false, // 是否展现骨骼
+
+    'deactivate all': deactivateAllActions,   // 停止所有动画
+    'activate all': activateAllActions,  //激活所有动画
+
+    'pause/continue': pauseContinue,   //暂停/继续
+    'make single step': toSingleStepMode, // 展示当前帧
+    'modify step size': 0.05,  // 设置模型每帧动画占比
+
+    'from walk to idle': function () {  // 动画过渡 walk to idle
       prepareCrossFade( walkAction, idleAction, 1.0 );
   
     },
-    'from idle to walk': function () {
+    'from idle to walk': function () {  // 动画过渡 idle to walk
   
       prepareCrossFade( idleAction, walkAction, 0.5 );
   
     },
-    'from walk to run': function () {
+    'from walk to run': function () { // 动画过渡 walk to run
   
       prepareCrossFade( walkAction, runAction, 2.5 );
   
     },
-    'from run to walk': function () {
+    'from run to walk': function () { // 动画过渡  run to walk
   
       prepareCrossFade( runAction, walkAction, 5.0 );
   
     },
+
     'use default duration': true,
     'set custom duration': 3.5,
     'modify idle weight': 0.0,
@@ -205,19 +231,24 @@ function createPanel() {
     'modify run weight': 0.0,
     'modify time scale': 1.0
   };
+
   folder1.add( settings, 'show model' ).onChange( showModel );
 	folder1.add( settings, 'show skeleton' ).onChange( showSkeleton );
+
 	folder2.add( settings, 'deactivate all' );
 	folder2.add( settings, 'activate all' );
+
 	folder3.add( settings, 'pause/continue' );
 	folder3.add( settings, 'make single step' );
 	folder3.add( settings, 'modify step size', 0.01, 0.1, 0.001 );
+
 	crossFadeControls.push( folder4.add( settings, 'from walk to idle' ) );
 	crossFadeControls.push( folder4.add( settings, 'from idle to walk' ) );
 	crossFadeControls.push( folder4.add( settings, 'from walk to run' ) );
 	crossFadeControls.push( folder4.add( settings, 'from run to walk' ) );
 	folder4.add( settings, 'use default duration' );
 	folder4.add( settings, 'set custom duration', 0, 10, 0.01 );
+
 	folder5.add( settings, 'modify idle weight', 0.0, 1.0, 0.01 ).listen().onChange( function ( weight:number ) {
 		setWeight( idleAction, weight );
 	} );
@@ -228,15 +259,15 @@ function createPanel() {
 		setWeight( runAction, weight );
 	} );
 	folder6.add( settings, 'modify time scale', 0.0, 1.5, 0.01 ).onChange( modifyTimeScale );
-	folder1.open();
+	
+  // 默认展开所有折叠面板
+  folder1.open();
 	folder2.open();
 	folder3.open();
 	folder4.open();
 	folder5.open();
 	folder6.open();
 }
-
-
 
 
 function deactivateAllActions() {
@@ -251,6 +282,7 @@ function deactivateAllActions() {
 
 function activateAllActions() {
 
+  // 设置动画权重
   setWeight( idleAction, settings[ 'modify idle weight' ] );
   setWeight( walkAction, settings[ 'modify walk weight' ] );
   setWeight( runAction, settings[ 'modify run weight' ] );
@@ -287,7 +319,7 @@ mixer.timeScale = speed;
 
 
 
-
+ // 暂停或继续
 function pauseContinue() {
 
 if ( singleStepMode ) {
@@ -311,6 +343,7 @@ if ( singleStepMode ) {
 
 }
 
+// 暂停所有动画
 function pauseAllActions() {
 
 actions.forEach( function ( action ) {
@@ -321,6 +354,7 @@ actions.forEach( function ( action ) {
 
 }
 
+// 所有动画均不暂停
 function unPauseAllActions() {
 
 actions.forEach( function ( action ) {
@@ -366,6 +400,8 @@ function prepareCrossFade( startAction:THREE.AnimationAction, endAction:THREE.An
 
 }
 
+
+// 设置动画淡出的持续时间
 function setCrossFadeDuration( defaultDuration:number ) {
 
   // Switch default crossfade duration <-> custom crossfade duration
@@ -400,6 +436,7 @@ function synchronizeCrossFade( startAction:THREE.AnimationAction, endAction:THRE
 
 }
 
+// 设置动画过渡成另一种动画
 function executeCrossFade( startAction:THREE.AnimationAction, endAction:THREE.AnimationAction, duration:number ) {
 
   // Not only the start action, but also the end action must get a weight of 1 before fading
@@ -415,14 +452,17 @@ function executeCrossFade( startAction:THREE.AnimationAction, endAction:THREE.An
 }
 
 
+
 function setWeight( action:THREE.AnimationAction, weight:number ) {
 
      action.enabled = true;
-     action.setEffectiveTimeScale( 1 );
-     action.setEffectiveWeight( weight );
+     action.setEffectiveTimeScale( 1 );  // 设置动画时间比例以及停用所有的变形
+     action.setEffectiveWeight( weight ); // 设置动画权重以及停止所有淡入淡出
    
-   }
-   function updateWeightSliders() {
+}
+
+// 更新控制面板的权重
+function updateWeightSliders() {
    
    settings[ 'modify idle weight' ] = idleWeight;
    settings[ 'modify walk weight' ] = walkWeight;
@@ -431,6 +471,7 @@ function setWeight( action:THREE.AnimationAction, weight:number ) {
 }
 // Called by the render loop
 
+// 更新动画变换的可用按钮
 function updateCrossFadeControls() {
 
   if ( idleWeight === 1 && walkWeight === 0 && runWeight === 0 ) {
@@ -472,6 +513,7 @@ function render(){
 
 				requestAnimationFrame( render );
       
+        // 更新动画权重
 				idleWeight = idleAction?.getEffectiveWeight();
 				walkWeight = walkAction?.getEffectiveWeight();
 				runWeight = runAction?.getEffectiveWeight();
