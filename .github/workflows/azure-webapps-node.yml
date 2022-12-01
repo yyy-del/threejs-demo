@@ -17,6 +17,7 @@
 # For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
 
+
 on:
   push:
     branches: [ "master" ]
@@ -27,7 +28,7 @@ env:
   AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'                # set this to the node version to use
-  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}   # This token is provided by Actions, you do not need to create your own token
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}   # This token is provided by Actions, you do not need to create your own token
 
 # Sets permissions of the ACCESS_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -68,8 +69,8 @@ jobs:
 
 
       - name: deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v3   # use https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-vue-and-nuxt
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}  # token验证
+          github_token: ${{ secrets.GITHUB_TOKEN  }}  # token验证
           publish_dir: ./dist
