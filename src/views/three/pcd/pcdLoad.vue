@@ -10,5 +10,5 @@
  import ThreePCD from '@/components/ThreePCD/ThreePCD.vue'
 
 //  const pcdSrc = location.origin + '/model/pcd/model1.pcd'
- const pcdSrc = location.origin + '/model/pcd/Zaghetto.pcd'
+ const pcdSrc =   import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING  + '/model/pcd/Zaghetto.pcd':    location.origin + '/model/pcd/Zaghetto.pcd'
 </script>

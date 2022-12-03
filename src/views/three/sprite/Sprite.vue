@@ -102,7 +102,7 @@ function init(){
    // 创建一个草地平面
    let grassPlan = new THREE.PlaneGeometry(1000,1000)  // 矩形平面
   // 加载草地纹理贴图
-  const src = location.origin + '/img/grasslight-big.jpg'
+  const src = import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING + '/img/grasslight-big.jpg':  location.origin + '/img/grasslight-big.jpg'
    new THREE.TextureLoader().load(src,(grassTexture)=>{
      grassTexture.wrapS = THREE.RepeatWrapping
      grassTexture.wrapT = THREE.RepeatWrapping
@@ -126,7 +126,7 @@ function init(){
 }
 // 添加树
 function addTree(){
-  const src = location.origin + '/img/tree-02.png'
+  const src = import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING + '/img/tree-02.png' : location.origin + '/img/tree-02.png'
   
   new THREE.TextureLoader().load(src,(treeTexture)=>{
     for (let i = 0; i < 100; i++) {
@@ -156,7 +156,7 @@ function addTree(){
 let rainGroup = new THREE.Group()
 
 function addRain(){
-  const src = location.origin + '/img/sprite.png'
+  const src =  import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING +  '/img/sprite.png':location.origin + '/img/sprite.png'
 
    new THREE.TextureLoader().load(src,(Texture)=>{
     for (let i = 0 ;i < 400 ;i++){
