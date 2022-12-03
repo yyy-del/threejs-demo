@@ -43,7 +43,7 @@ function init(){
 
   // TextureLoader创建一个纹理加载器对象，可以加载图片作为几何体纹理
   const textureLoader = new THREE.TextureLoader();
-  const src = import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING + '/img/sea.webp' :location.origin  + '/img/sea.webp'
+  const src = import.meta.env.VITE_IS_GITHUB ?  location.origin + '/' + import.meta.env.VITE_SPLICING + '/img/sea.webp' :location.origin  + '/img/sea.webp'
   textureLoader.load(src,(texture)=>{
 
     var material = new THREE.MeshLambertMaterial({
@@ -205,7 +205,7 @@ async function textureLine(){
   const geometry = new THREE.BoxGeometry(30,40,50)
   
   const textureLoader = new THREE.TextureLoader();
-  const src =import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING +  '/img/sea.webp'  : location.origin + '/img/sea.webp'
+  const src =import.meta.env.VITE_IS_GITHUB ?  location.origin + '/' + import.meta.env.VITE_SPLICING +  '/img/sea.webp'  : location.origin + '/img/sea.webp'
 
   const texture = await textureLoader.load(src);
   // 设置阵列模式   默认ClampToEdgeWrapping  RepeatWrapping：阵列  镜像阵列：MirroredRepeatWrapping
@@ -238,7 +238,7 @@ async function textureOffset(){
 
   const geometry = new THREE.BoxGeometry(50,50,50)
   const textureLoader = new THREE.TextureLoader();
-  const src =import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING +'/img/sea.webp' :location.origin + '/img/sea.webp'
+  const src =import.meta.env.VITE_IS_GITHUB ?  location.origin + '/' + import.meta.env.VITE_SPLICING +'/img/sea.webp' :location.origin + '/img/sea.webp'
   const texture = await textureLoader.load(src);
 
 
@@ -262,7 +262,7 @@ async function textureRotation(){
 
   const geometry = new THREE.BoxGeometry(50,50,50)
   const textureLoader = new THREE.TextureLoader();
-  const src =import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING + '/img/sea.webp' :location.origin   + '/img/sea.webp'
+  const src =import.meta.env.VITE_IS_GITHUB ?  location.origin + '/' + import.meta.env.VITE_SPLICING + '/img/sea.webp' :location.origin   + '/img/sea.webp'
   const texture = await textureLoader.load(src);
   
    // 设置纹理旋转角度
@@ -285,7 +285,7 @@ async function textureRotation(){
 let textureAnm:THREE.Texture
 async function textureAnimation(){
 
-  const src =import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.env.SPLICING +  '/img/sea.webp': location.origin + '/img/sea.webp'
+  const src =import.meta.env.VITE_IS_GITHUB ?  location.origin + '/' + import.meta.env.VITE_SPLICING +  '/img/sea.webp': location.origin + '/img/sea.webp'
 
     /**
     * 创建一个设置重复纹理的管道

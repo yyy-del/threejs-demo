@@ -114,8 +114,10 @@ function init(){
 
 
    // 加载gltf文件
-  const loader = new GLTFLoader();
-  const src = import.meta.env.IS_GITHUB ?  location.origin + '/' + import.meta.SPLICING  + '/model/gltf/Soldier.glb':location.origin + '/model/gltf/Soldier.glb'
+  const loader = new GLTFLoader();+
+  console.log(import.meta.env.VITE_IS_GITHUB)
+  console.log(import.meta.env.VITE_SPLICING)
+  const src = import.meta.env.VITE_IS_GITHUB ?  location.origin + '/' + import.meta.env.VITE_SPLICING  + '/model/gltf/Soldier.glb':location.origin + '/model/gltf/Soldier.glb'
 	loader.load( src,
     function ( gltf:GLTF ) {
       console.log(gltf)
