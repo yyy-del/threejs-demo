@@ -1,6 +1,9 @@
 <script setup lang="ts">
+
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+
+import { toggleDark } from '@/utils'
 
 let router = useRouter()
 
@@ -40,7 +43,11 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
              </el-menu>
          </el-aside>
          <el-container>
-           <el-header>Header</el-header>
+
+           <el-header> 
+             <el-button @click="toggleDark()" type="primary"></el-button>
+           </el-header>
+
            <el-main class="el-main">
              <RouterView/>
            </el-main>
@@ -67,7 +74,7 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
   .el-main{
     position: relative;
     --el-main-padding: 2px;
-    background-color:$--home-background-color;
+    background-color:#fff;
   }
 }
 </style>
