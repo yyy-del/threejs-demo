@@ -1,16 +1,51 @@
 <script setup lang="ts">
 
 
-import { computed } from 'vue';
+import { computed ,ref} from 'vue';
 import { useRouter } from 'vue-router';
 
-import { toggleDark } from '@/utils'
+import { toggleDark,setTheme } from '@/utils'
+
+import {
+  Sunny,
+  Moon
+} from '@element-plus/icons-vue'
 
 
-
+let isDark= ref(false)
 let router = useRouter()
 
 const currentPath  = computed(()=>  router.currentRoute.value.path)
+const toggleDarkTheme = ()=>{
+  isDark.value = toggleDark()
+}
+const changeTheme  =(type:string)=>{
+  switch (type) {
+    case  'primary':
+    setTheme({primary:'#CCFF00'}) 
+      break;
+  
+    case  'success':
+    setTheme({success:'#99CC00'}) 
+      break;
+  
+    case  'info':
+    setTheme({info:'#006600'}) 
+      break;
+  
+    case  'warning':
+    setTheme({warning:'#330066'}) 
+      break;
+  
+    case  'danger':
+    setTheme({danger:'#660033'}) 
+      break;
+  
+    default:
+      break;
+  }
+     
+}
 
 
 </script>
@@ -48,8 +83,18 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
          </el-aside>
          <el-container>
 
-           <el-header> 
-             <el-button @click="toggleDark()" type="primary"></el-button>
+           <el-header class="header"> 
+             <el-button type="primary" @click="changeTheme('primary')">primary</el-button>
+             <el-button type="success" @click="changeTheme('success')">success</el-button>
+             <el-button type="info" @click="changeTheme('info')">info</el-button>
+             <el-button type="warning" @click="changeTheme('warning')">warning</el-button>
+             <el-button type="danger" @click="changeTheme('danger')">danger</el-button>
+          
+             <el-icon  @click="toggleDarkTheme">
+                <Sunny v-if="!isDark" />
+                <Moon v-else/>
+             </el-icon> 
+ 
            </el-header>
 
            <el-main class="el-main">
@@ -79,6 +124,12 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
     position: relative;
     --el-main-padding: 2px;
     background-color:#fff;
+  }
+
+  .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 </style>
