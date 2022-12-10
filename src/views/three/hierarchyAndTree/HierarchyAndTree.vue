@@ -22,7 +22,7 @@ import * as THREE from 'three'
 
  let elem:HTMLElement|null
 
- let timer:number
+ let timer: NodeJS.Timeout
 
  onMounted(()=>{
   elem = document.getElementById('hierarchy-tree')
