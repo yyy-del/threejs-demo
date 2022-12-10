@@ -1,9 +1,12 @@
 <script setup lang="ts">
 
+
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { toggleDark } from '@/utils'
+
+
 
 let router = useRouter()
 
@@ -11,6 +14,7 @@ const currentPath  = computed(()=>  router.currentRoute.value.path)
 
 
 </script>
+
 <template>
       <div class="common-layout">
        <el-container class="el-container">
